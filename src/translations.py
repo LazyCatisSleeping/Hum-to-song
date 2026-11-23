@@ -1,0 +1,31 @@
+"""User-facing text for the bilingual Streamlit interface."""
+TRANSLATIONS = {
+    "English": {
+        "title": "Hum-to-Song Recognition",
+        "subtitle": "Sprint 2: Recording, Uploading, Submission, and Audio Preparation",
+        "notice": "Song recognition is not implemented yet. This demo prepares audio for later analysis.",
+        "source": "Choose an audio source",
+        "record": "Record Humming",
+        "upload": "Upload Audio",
+        "submit": "Submit Audio for Processing",
+        "success": "Audio submitted and prepared successfully.",
+        "prepared": "Prepared Audio",
+        "download": "Download Prepared WAV",
+        "ready": "Ready for future noise reduction, pitch extraction, and song matching.",
+        "error": "Audio preparation failed",
+    },
+    "中文": {
+        "title": "哼唱歌曲识别",
+        "subtitle": "Sprint 2：录音、上传、提交和音频预处理",
+        "notice": "歌曲识别尚未实现。本程序用于准备后续分析所需的音频。",
+        "source": "选择音频来源",
+        "record": "录制哼唱",
+        "upload": "上传音频",
+        "submit": "提交音频进行处理",
+        "success": "音频提交并处理成功。",
+        "prepared": "处理后的音频",
+        "download": "下载处理后的 WAV 文件",
+        "ready": "音频已准备好，可用于后续降噪、音高提取和歌曲匹配。",
+        "error": "音频预处理失败",
+    },
+}
