@@ -72,7 +72,7 @@ python -m pytest -q
 
 ## Check the build history
 
-GitHub Actions installs the requirements and runs `python -m pytest -q` on Ubuntu with Python 3.12. The workflow runs when a pull request opens or receives a new commit, and when a commit reaches `main`. [Workflow file](../.github/workflows/tests.yml)
+GitHub Actions installs the requirements and runs `python -m pytest -q` on Ubuntu with Python 3.12. The workflow runs when a pull request opens or receives a new commit, and when a commit reaches `main` or a `peer-review/` branch. [Workflow file](../.github/workflows/tests.yml)
 
 Open the repository's **Actions** tab to see its run history. Select a **Tests** run and open the **pytest** job. Check the branch or pull request and the commit shown on the run page. The pytest step shows the test count or names and errors for failed tests. You can also reach the run from the pull request's **Checks** tab. [GitHub Actions run history](https://github.com/LazyCatisSleeping/Hum-to-song/actions)
 

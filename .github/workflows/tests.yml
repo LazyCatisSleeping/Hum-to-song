@@ -3,7 +3,7 @@ name: Tests
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, 'peer-review/**']
 
 permissions:
   contents: read
