@@ -4,7 +4,11 @@ Team 1 — Escape From DDL | CPS 4301 Software Engineering
 
 **Members:** Weiying (Wayne) Chen, Xinyue (Lily) Feng, Caiyue (Cary) Wang, Marlon Cedeno.
 
-This repository is an audio-input proof of concept, **not a complete song-recognition application**.
+Hum-to-Song is a Streamlit app for recording, uploading, and preparing audio. The repository also includes a standalone SQLite song catalog.
+
+- [User Manual](docs/user_manual.md) covers setup, recording, uploading, downloads, and bug reports.
+- [Developer Guidelines](docs/developer_guidelines.md) cover the code, tests, and CI.
+- [GitHub Actions](https://github.com/LazyCatisSleeping/Hum-to-song/actions) shows the test run history.
 
 ## User stories covered
 
@@ -19,7 +23,7 @@ US-05 (noise reduction), US-06 (pitch extraction), US-07 (melodic pattern), US-0
 
 ## Run locally
 
-Python 3.10–3.12 recommended.
+Python 3.12 is used in CI and is recommended for a new setup.
 
 ```bash
 python -m venv .venv
@@ -49,9 +53,9 @@ python -m pytest -q
 
 ## Limitations
 
-- Supports WAV, FLAC, OGG uploads; not MP3/M4A.
-- Uses the first 30 seconds of audio; no cloud storage or song database.
-- Only Sprint 2's audio submission and preparation handoff is demonstrated. Recognition is a future sprint.
+- Accepts WAV, FLAC, and OGG uploads up to 15 MiB. Audio preparation uses the first 30 seconds.
+- The [SQLite song catalog](docs/database_design.md) stores song metadata separately from the Streamlit audio workflow.
+- The current audio workflow ends with a prepared WAV. Song recognition is planned for a later sprint.
 
 ## Credits and contributions
 

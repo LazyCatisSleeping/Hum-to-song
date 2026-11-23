@@ -3,30 +3,40 @@ import numpy as np
 import pytest
 import soundfile as sf
 from src.audio_processing import (
-    AudioPreparationError, prepare_audio, TARGET_SAMPLE_RATE, MAX_DURATION_SECONDS
+    AudioPreparationError,
+    MAX_DURATION_SECONDS,
+    MAX_FILE_SIZE_BYTES,
+    TARGET_SAMPLE_RATE,
+    prepare_audio,
 )
 
 
-def wave_bytes(rate=44100, seconds=1.0, channels=2, amplitude=0.3):
+def audio_bytes(rate=44100, seconds=1.0, channels=2, amplitude=0.3, audio_format="WAV"):
     t = np.arange(int(rate * seconds)) / rate
     wave = (amplitude * np.sin(2 * np.pi * 440 * t)).astype('float32')
     sound = np.column_stack([wave] * channels)
     buffer = BytesIO()
-    sf.write(buffer, sound, rate, format='WAV')
+    sf.write(buffer, sound, rate, format=audio_format)
     return buffer.getvalue()
 
 
-def test_prepare_resamples_and_downmixes():
-    result = prepare_audio('humming.wav', wave_bytes())
-    output, rate = sf.read(BytesIO(result.wav_bytes))
-    assert rate == TARGET_SAMPLE_RATE
-    assert output.ndim == 1
-    assert len(output) == TARGET_SAMPLE_RATE
+@pytest.mark.parametrize("audio_format", ["WAV", "FLAC", "OGG"])
+def test_prepare_resamples_and_downmixes(audio_format):
+    result = prepare_audio(
+        f"humming.{audio_format.lower()}", audio_bytes(audio_format=audio_format)
+    )
+    output = sf.info(BytesIO(result.wav_bytes))
+    assert output.format == "WAV"
+    assert output.subtype == "PCM_16"
+    assert output.samplerate == TARGET_SAMPLE_RATE
+    assert output.channels == 1
+    assert output.frames == TARGET_SAMPLE_RATE
 
 
 def test_truncates_long_recording():
-    result = prepare_audio('humming.wav', wave_bytes(rate=8000, seconds=31, channels=1))
-    assert result.duration_seconds <= MAX_DURATION_SECONDS + 1 / TARGET_SAMPLE_RATE
+    result = prepare_audio('humming.wav', audio_bytes(rate=8000, seconds=31, channels=1))
+    assert result.duration_seconds == MAX_DURATION_SECONDS
+    assert result.samples == MAX_DURATION_SECONDS * TARGET_SAMPLE_RATE
 
 
 def test_rejects_unsupported_format():
@@ -39,9 +49,14 @@ def test_rejects_empty_file():
         prepare_audio('song.wav', b'')
 
 
+def test_rejects_file_larger_than_limit():
+    with pytest.raises(AudioPreparationError, match="15 MB"):
+        prepare_audio("song.wav", b"\0" * (MAX_FILE_SIZE_BYTES + 1))
+
+
 def test_rejects_silence():
     with pytest.raises(AudioPreparationError, match='silent'):
-        prepare_audio('song.wav', wave_bytes(amplitude=0))
+        prepare_audio('song.wav', audio_bytes(amplitude=0))
 
 
 def test_rejects_invalid_data():

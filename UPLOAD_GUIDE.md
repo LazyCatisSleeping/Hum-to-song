@@ -1,5 +1,7 @@
 # Team Upload Guide
 
+This checklist describes the original repository setup. For current setup and testing instructions, see the [Developer Guidelines](docs/developer_guidelines.md).
+
 This repository starts with empty directories. Each teammate should commit only the files they actually create, revise, or test.
 
 ## Planned responsibilities
